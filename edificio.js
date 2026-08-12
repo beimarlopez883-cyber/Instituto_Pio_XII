@@ -392,6 +392,9 @@ const cargador = new GLTFLoader();
 // Indicador de carga en pantalla (opcional, ver index.html)
 const indicadorCarga = document.getElementById("cargaModelo");
 
+// Variable global para el modelo
+let modeloCargado = null;
+
 
 // ============================================================
 // CARGAR MODELO
@@ -422,6 +425,9 @@ cargador.load(
 
 
         const modelo = gltf.scene;
+        
+        // Guardar referencia global
+        modeloCargado = modelo;
 
 
         // ====================================================
@@ -768,6 +774,21 @@ window.addEventListener(
 
 
 // ============================================================
+// SCROLL PARA ROTAR
+// ============================================================
+
+let rotacionScroll = 0;
+
+window.addEventListener("wheel", (evento) => {
+
+    // Capturar la dirección y cantidad del scroll
+    // El scroll normal sigue funcionando
+    rotacionScroll += evento.deltaY * 0.005;
+
+});
+
+
+// ============================================================
 // ANIMACIÓN
 // ============================================================
 
@@ -785,6 +806,10 @@ function animar() {
 
     controles.update();
 
+    // Aplicar rotación por scroll al modelo
+    if (modeloCargado) {
+        modeloCargado.rotation.y = rotacionScroll;
+    }
 
     // Dibujar escena
 
