@@ -1,0 +1,387 @@
+/* =====================================================
+   TOKENS
+===================================================== */
+:root{
+    --glass:         rgba(255, 255, 255, 0.055);
+    --glass-border:  rgba(255, 255, 255, 0.12);
+    --ink:           #eef1f7;
+    --ink-dim:       #9aa4b8;
+    --accent-a:      #56e7c4;   /* verde-menta técnico */
+    --accent-b:      #8b7bf0;   /* violeta */
+    --accent-grad:   linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    --radius:        18px;
+    --font-display:  'Space Grotesk', sans-serif;
+    --font-body:     'Inter', sans-serif;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+    background: #05070d;
+    color: var(--ink);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+}
+
+/* =====================================================
+   MODELO 3D — fijo, detrás de todo
+   (el color de fondo real lo pone edificio.js con
+   escena.background, esto es solo un respaldo)
+===================================================== */
+#visor3D{
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background: #061b35;
+}
+
+/* =====================================================
+   CAPA DE INTERFAZ
+===================================================== */
+#interfaz{
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* =====================================================
+   MENÚ
+===================================================== */
+#menu{
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 14px 30px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    pointer-events: auto;
+}
+
+.logo{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2.5px;
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+}
+
+.links{
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+.links a{
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    transition: color 0.25s ease;
+}
+
+.links a:hover,
+.links a:focus-visible{
+    color: var(--ink);
+    outline: none;
+}
+
+/* =====================================================
+   SECCIONES GENERALES
+===================================================== */
+section{
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 140px 8vw 100px;
+    pointer-events: none;
+}
+
+.glass-panel{
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    pointer-events: auto;
+}
+
+/* =====================================================
+   HERO / INICIO
+===================================================== */
+#inicio{ justify-content: flex-start; }
+
+.hero-eyebrow{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent-a);
+    font-weight: 600;
+    margin-bottom: 22px;
+}
+
+.hero-eyebrow::before{
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--accent-a);
+    display: inline-block;
+}
+
+.hero-panel{ max-width: 620px; padding: 48px 46px; }
+
+.hero-panel h1{
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.08;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.hero-panel p{
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-dim);
+    margin-bottom: 30px;
+    max-width: 480px;
+}
+
+.btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    background: var(--accent-grad);
+    color: #06110d;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 10px 30px rgba(86,231,196,0.18);
+}
+
+.btn:hover,
+.btn:focus-visible{
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(86,231,196,0.28);
+    outline: none;
+}
+
+.hero-stats{
+    display: flex;
+    gap: 34px;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--glass-border);
+}
+
+.hero-stats div strong{
+    display: block;
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ink);
+}
+
+.hero-stats div span{
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.4px;
+}
+
+/* =====================================================
+   HISTORIA
+===================================================== */
+#historia{ justify-content: flex-end; }
+
+.historia-panel{ max-width: 560px; padding: 46px 44px; }
+
+.section-number{
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--accent-b);
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.historia-panel h2{
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.4vw, 36px);
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.historia-panel p{
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink-dim);
+    margin-bottom: 14px;
+}
+
+.historia-panel p strong{ color: var(--ink); font-weight: 600; }
+
+.timeline{
+    display: flex;
+    gap: 22px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--glass-border);
+}
+
+.timeline div{ flex: 1; }
+
+.timeline strong{
+    display: block;
+    font-family: var(--font-display);
+    color: var(--accent-a);
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.timeline span{
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+    display: block;
+}
+
+/* =====================================================
+   CONTACTO
+===================================================== */
+#contacto{ justify-content: center; }
+
+.contacto-panel{ width: 100%; max-width: 520px; padding: 46px 44px; margin: 0 auto; }
+
+.contacto-panel h2{
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.4vw, 34px);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.contacto-panel > p{ font-size: 14.5px; color: var(--ink-dim); margin-bottom: 28px; }
+
+.form-row{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+
+.form-row label{ font-size: 12px; letter-spacing: 0.5px; color: var(--ink-dim); }
+
+.form-row input,
+.form-row textarea{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.form-row input::placeholder,
+.form-row textarea::placeholder{ color: rgba(238,241,247,0.35); }
+
+.form-row input:focus,
+.form-row textarea:focus{
+    outline: none;
+    border-color: var(--accent-a);
+    background: rgba(255,255,255,0.06);
+}
+
+.contacto-panel .btn{
+    width: 100%;
+    justify-content: center;
+    margin-top: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+/* =====================================================
+   AVISO DE CARGA DEL MODELO
+===================================================== */
+#cargaModelo{
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#cargaModelo.oculto{ opacity: 0; }
+
+/* =====================================================
+   FOOTER
+===================================================== */
+footer{
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 26px 20px 34px;
+    font-size: 12px;
+    color: var(--ink-dim);
+    letter-spacing: 0.4px;
+    pointer-events: none;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 900px){
+    section{ padding: 130px 6vw 80px; justify-content: center !important; }
+    .hero-panel, .historia-panel, .contacto-panel{ max-width: 100%; padding: 34px 26px; }
+    .hero-stats{ gap: 22px; flex-wrap: wrap; }
+    .timeline{ flex-wrap: wrap; gap: 16px; }
+}
+
+@media (max-width: 640px){
+    #menu{
+        gap: 22px;
+        padding: 12px 20px;
+        top: 14px;
+        width: 92%;
+        justify-content: space-between;
+    }
+    .links{ gap: 16px; }
+    .links a{ font-size: 11.5px; }
+    .logo{ font-size: 13px; letter-spacing: 1.5px; }
+}

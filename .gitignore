@@ -1,0 +1,7 @@
+# Archivos de Blender
+*.blend
+
+# Archivos de respaldo de Blender
+*.blend1
+*.blend2
+*.blend3

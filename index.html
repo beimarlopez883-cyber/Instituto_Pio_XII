@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instituto Tecnológico Pío XII</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="estilo.css">
+
+<!-- THREE.JS -->
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+    }
+}
+</script>
+
+</head>
+
+<body>
+
+    <!-- ======================================
+         MODELO 3D — FONDO COMPLETO
+    ======================================= -->
+    <div id="visor3D"></div>
+
+    <!-- Aviso mientras carga el .glb (76 MB, tarda unos segundos) -->
+    <div id="cargaModelo">Cargando modelo 3D... 0%</div>
+
+    <!-- ======================================
+         TODO EL CONTENIDO SOBRE EL 3D
+    ======================================= -->
+    <div id="interfaz">
+
+        <nav id="menu">
+            <div class="logo">PÍO XII</div>
+            <ul class="links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#historia">Historia</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <section id="inicio">
+            <div class="glass-panel hero-panel">
+                <div class="hero-eyebrow">INSTITUTO TECNOLÓGICO</div>
+                <h1>Formamos a quienes construirán la próxima infraestructura digital.</h1>
+                <p>
+                    Un espacio técnico donde la teoría se convierte en sistemas reales.
+                    Explora el instituto en tres dimensiones: hacé clic y arrastrá para
+                    rotar, y usá la rueda del mouse para acercarte.
+                </p>
+                <a href="#historia" class="btn">Conocer la historia →</a>
+
+                <div class="hero-stats">
+                    <div>
+                        <strong>1994</strong>
+                        <span>Año de fundación</span>
+                    </div>
+                    <div>
+                        <strong>12</strong>
+                        <span>Programas técnicos</span>
+                    </div>
+                    <div>
+                        <strong>3.400+</strong>
+                        <span>Egresados</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historia">
+            <div class="glass-panel historia-panel">
+                <div class="section-number">02 · NUESTRA HISTORIA</div>
+                <h2>De un taller de electrónica a un campus digital</h2>
+                <p>
+                    El <strong>Instituto Tecnológico Pío XII</strong> nació como un pequeño taller de electrónica
+                    fundado por un grupo de docentes convencidos de que la formación técnica debía estar al
+                    alcance de cualquier persona con curiosidad y disciplina.
+                </p>
+                <p>
+                    Con los años, ese taller se transformó en un instituto de referencia en informática y
+                    sistemas, incorporando laboratorios, redes propias y alianzas con empresas tecnológicas
+                    de la región para que cada estudiante egrese con experiencia real, no solo teoría.
+                </p>
+                <div class="timeline">
+                    <div>
+                        <strong>1994</strong>
+                        <span>Primer taller de electrónica</span>
+                    </div>
+                    <div>
+                        <strong>2003</strong>
+                        <span>Apertura del área de Informática</span>
+                    </div>
+                    <div>
+                        <strong>2019</strong>
+                        <span>Nuevo campus y laboratorios</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <div class="glass-panel contacto-panel">
+                <h2>Hablemos</h2>
+                <p>Escríbenos y te contamos más sobre nuestras carreras y admisiones.</p>
+
+                <form onsubmit="return false;">
+                    <div class="form-row">
+                        <label for="nombre">Nombre</label>
+                        <input id="nombre" type="text" placeholder="Tu nombre completo">
+                    </div>
+                    <div class="form-row">
+                        <label for="email">Correo</label>
+                        <input id="email" type="email" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                    <div class="form-row">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" rows="4" placeholder="Cuéntanos qué te gustaría saber"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Enviar mensaje</button>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            © 2026 Instituto Tecnológico Pío XII — Todos los derechos reservados
+        </footer>
+
+    </div>
+
+    <!-- ======================================
+         JAVASCRIPT DEL MODELO
+    ======================================= -->
+    <script type="module" src="edificio.js"></script>
+
+</body>
+</html>
