@@ -1,0 +1,17 @@
+[33mcommit 6258cf79ba99b6a3eea3a46bf23b1af26e1a49ba[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: COCHA <beimarlopez883@gmail.com>
+Date:   Wed Aug 12 18:36:19 2026 -0400
+
+    Actualiza sitio web y agrega galeria
+
+ carreras.html     | 143 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ edificio.js       |  25 [32m++++++++++[m
+ estilo.css        |  23 [32m++++[m[31m-----[m
+ galeria.html      |  99 [32m+++++++++++++++++++++++++++++++++++++[m
+ index.html        |  33 [32m+++++++++++++[m
+ modelos/pio.jpg   | Bin [31m0[m -> [32m189725[m bytes
+ modelos/pio3.jpg  | Bin [31m0[m -> [32m154919[m bytes
+ modelos/pio4.jpg  | Bin [31m0[m -> [32m137537[m bytes
+ modelos/pio5.jpg  | Bin [31m0[m -> [32m194832[m bytes
+ modelos/poio2.jpg | Bin [31m0[m -> [32m154315[m bytes
+ 10 files changed, 312 insertions(+), 11 deletions(-)

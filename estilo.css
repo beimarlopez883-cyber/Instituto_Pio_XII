@@ -2,13 +2,13 @@
    TOKENS
 ===================================================== */
 :root{
-    --glass:         rgba(255, 255, 255, 0.055);
-    --glass-border:  rgba(255, 255, 255, 0.12);
-    --ink:           #eef1f7;
-    --ink-dim:       #9aa4b8;
-    --accent-a:      #56e7c4;   /* verde-menta técnico */
-    --accent-b:      #8b7bf0;   /* violeta */
-    --accent-grad:   linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    --glass:         rgba(255, 255, 255, 0.15);
+    --glass-border:  rgba(255, 255, 255, 0.25);
+    --ink:           #ffffff;
+    --ink-dim:       #e5edf8;
+    --accent-a:      #75b9ff;   /* azul institucional */
+    --accent-b:      #ffe06a;   /* amarillo institucional */
+    --accent-grad:   linear-gradient(135deg, #75b9ff, #ffe06a);
     --radius:        18px;
     --font-display:  'Space Grotesk', sans-serif;
     --font-body:     'Inter', sans-serif;
@@ -28,37 +28,24 @@ body{
 @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
 }
-
-/* =====================================================
-   MODELO 3D — fijo, detrás de todo
-   (el color de fondo real lo pone edificio.js con
-   escena.background, esto es solo un respaldo)
-===================================================== */
 #visor3D{
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
     z-index: 1;
-    background: #061b35;
+    background: url('fondo.png') center/cover no-repeat fixed;
+    background-color: #061b35;
 }
-
-/* =====================================================
-   CAPA DE INTERFAZ
-===================================================== */
 #interfaz{
     position: relative;
     z-index: 10;
     width: 100%;
     pointer-events: none;
 }
-
-/* =====================================================
-   MENÚ
-===================================================== */
 #menu{
     position: fixed;
-    top: 18px;
+    top: 0;
     left: 0;
     right: 0;
     z-index: 100;
@@ -66,46 +53,49 @@ body{
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding: 12px 6vw;
+    padding: 16px 6vw;
     border-radius: 0;
-    background: transparent; /* fondo transparente */
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: none;
+    background: linear-gradient(105deg, rgba(8, 48, 115, 0.96), rgba(18, 82, 165, 0.94) 78%, rgba(245, 191, 35, 0.9));
+    border: 1px solid rgba(255, 211, 61, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 28px rgba(3, 26, 70, 0.35);
     pointer-events: auto;
 }
 
 .logo{
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 2.5px;
-    background: var(--accent-grad);
+    font-size: 20px;
+    letter-spacing: 1.8px;
+    background: linear-gradient(135deg, #ffe06a, #f5bf23);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     white-space: nowrap;
 }
 
+.logo strong{ color: #ffe06a; }
+
 .links{
     display: flex;
-    gap: 30px;
+    gap: 28px;
+    margin-left: auto;
     list-style: none;
 }
 
 .links a{
-    color: var(--ink-dim);
+    color: #ffe06a;
     text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     letter-spacing: 0.6px;
     transition: color 0.25s ease;
 }
 
 .links a:hover,
 .links a:focus-visible{
-    color: var(--ink);
+    color: #ffffff;
     outline: none;
 }
 
@@ -114,10 +104,10 @@ body{
 ===================================================== */
 section{
     position: relative;
-    min-height: 100vh;
+    min-height: 60vh;
     display: flex;
     align-items: center;
-    padding: 140px 8vw 100px;
+    padding: 70px 8vw 35px;
     pointer-events: none;
 }
 
@@ -155,14 +145,15 @@ section{
     display: inline-block;
 }
 
-.hero-panel{ max-width: 620px; padding: 48px 46px; }
+.hero-panel{ max-width: 620px; padding: 32px 34px; }
 
 .hero-panel h1{
     font-family: var(--font-display);
     font-size: clamp(34px, 5vw, 54px);
     line-height: 1.08;
     font-weight: 700;
-    margin-bottom: 20px;
+    color: #ffe06a;
+    margin-bottom: 14px;
     letter-spacing: -0.5px;
 }
 
@@ -170,7 +161,7 @@ section{
     font-size: 16px;
     line-height: 1.65;
     color: var(--ink-dim);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     max-width: 480px;
 }
 
@@ -200,8 +191,8 @@ section{
 .hero-stats{
     display: flex;
     gap: 34px;
-    margin-top: 40px;
-    padding-top: 28px;
+    margin-top: 24px;
+    padding-top: 18px;
     border-top: 1px solid var(--glass-border);
 }
 
@@ -209,21 +200,21 @@ section{
     display: block;
     font-family: var(--font-display);
     font-size: 22px;
-    color: var(--ink);
+    color: #ffe06a;
 }
 
 .hero-stats div span{
     font-size: 12px;
-    color: var(--ink-dim);
+    color: #b9d9ff;
     letter-spacing: 0.4px;
 }
 
 /* =====================================================
    HISTORIA
 ===================================================== */
-#historia{ justify-content: flex-end; }
+#historia{ justify-content: flex-start; }
 
-.historia-panel{ max-width: 560px; padding: 46px 44px; }
+.historia-panel{ max-width: 700px; padding: 32px 34px; }
 
 .section-number{
     font-family: var(--font-display);
@@ -237,33 +228,40 @@ section{
 .historia-panel h2{
     font-family: var(--font-display);
     font-size: clamp(26px, 3.4vw, 36px);
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     font-weight: 600;
+    color: #ffe06a;
 }
 
 .historia-panel p{
     font-size: 15px;
     line-height: 1.75;
     color: var(--ink-dim);
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
-.historia-panel p strong{ color: var(--ink); font-weight: 600; }
+.historia-panel p strong{ color: #ffffff; font-weight: 600; }
+
+.historia-intro{
+    color: #f0f6f4 !important;
+    font-size: 15px;
+    line-height: 1.6 !important;
+}
 
 .timeline{
     display: flex;
-    gap: 22px;
-    margin-top: 26px;
-    padding-top: 22px;
+    gap: 16px;
+    margin-top: 18px;
+    padding-top: 16px;
     border-top: 1px solid var(--glass-border);
 }
 
-.timeline div{ flex: 1; }
+.timeline div{ flex: 1; min-width: 0; }
 
 .timeline strong{
     display: block;
     font-family: var(--font-display);
-    color: var(--accent-a);
+    color: #75b9ff;
     font-size: 16px;
     margin-bottom: 4px;
 }
@@ -275,23 +273,26 @@ section{
     display: block;
 }
 
+#historia .timeline span{ color: #dcebe7; }
+
 /* =====================================================
    CONTACTO
 ===================================================== */
-#contacto{ justify-content: center; }
+#contacto{ justify-content: flex-start; }
 
-.contacto-panel{ width: 100%; max-width: 520px; padding: 46px 44px; margin: 0 auto; }
+.contacto-panel{ width: 100%; max-width: 520px; padding: 32px 34px; margin: 0; }
 
 .contacto-panel h2{
     font-family: var(--font-display);
     font-size: clamp(26px, 3.4vw, 34px);
     margin-bottom: 10px;
     font-weight: 600;
+    color: #ffe06a;
 }
 
-.contacto-panel > p{ font-size: 14.5px; color: var(--ink-dim); margin-bottom: 28px; }
+.contacto-panel > p{ font-size: 14.5px; color: #e5edf8; margin-bottom: 18px; }
 
-.form-row{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.form-row{ display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
 
 .form-row label{ font-size: 12px; letter-spacing: 0.5px; color: var(--ink-dim); }
 
@@ -368,8 +369,8 @@ footer{
    RESPONSIVE
 ===================================================== */
 @media (max-width: 900px){
-    section{ padding: 130px 6vw 80px; justify-content: center !important; }
-    .hero-panel, .historia-panel, .contacto-panel{ max-width: 100%; padding: 34px 26px; }
+    section{ min-height: 56vh; padding: 65px 6vw 30px; justify-content: flex-start !important; }
+    .hero-panel, .historia-panel, .contacto-panel{ max-width: 100%; padding: 26px 22px; }
     .hero-stats{ gap: 22px; flex-wrap: wrap; }
     .timeline{ flex-wrap: wrap; gap: 16px; }
 }
@@ -378,11 +379,11 @@ footer{
     #menu{
         gap: 22px;
         padding: 12px 20px;
-        top: 14px;
-        width: 92%;
+        top: 0;
+        width: 100%;
         justify-content: space-between;
     }
-    .links{ gap: 16px; }
+    .links{ gap: 12px; }
     .links a{ font-size: 11.5px; }
-    .logo{ font-size: 13px; letter-spacing: 1.5px; }
+    .logo{ font-size: 14px; letter-spacing: 1px; }
 }

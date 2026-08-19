@@ -24,8 +24,8 @@ const contenedor = document.getElementById("visor3D");
 
 const escena = new THREE.Scene();
 
-// Fondo azul oscuro
-escena.background = new THREE.Color(0x061b35);
+// Fondo transparente para mostrar el PNG del CSS detrás
+escena.background = null;
 
 
 // ============================================================
@@ -71,7 +71,7 @@ const renderizador = new THREE.WebGLRenderer({
 
     antialias: true,
 
-    alpha: false
+    alpha: true
 
 });
 
@@ -789,6 +789,91 @@ window.addEventListener("wheel", (evento) => {
 
 
 // ============================================================
+// MOVIMIENTO CON TECLADO
+// ============================================================
+
+const teclasPresionadas = new Set();
+const velocidadMovimiento = 12;
+const vectorArriba = new THREE.Vector3(0, 1, 0);
+
+window.addEventListener("keydown", (evento) => {
+
+    if ([
+        "KeyW",
+        "KeyA",
+        "KeyS",
+        "KeyD",
+        "KeyQ",
+        "KeyE"
+    ].includes(evento.code)) {
+
+        teclasPresionadas.add(evento.code);
+        evento.preventDefault();
+
+    }
+
+});
+
+window.addEventListener("keyup", (evento) => {
+
+    teclasPresionadas.delete(evento.code);
+
+});
+
+function moverConTeclado(deltaSegundos) {
+
+    if (teclasPresionadas.size === 0) {
+        return;
+    }
+
+    const frente = new THREE.Vector3();
+    const derecha = new THREE.Vector3();
+    const desplazamiento = new THREE.Vector3();
+
+    camara.getWorldDirection(frente);
+    frente.y = 0;
+
+    if (frente.lengthSq() > 0) {
+        frente.normalize();
+    }
+
+    derecha.crossVectors(frente, vectorArriba).normalize();
+
+    const velocidad = velocidadMovimiento * deltaSegundos;
+
+    if (teclasPresionadas.has("KeyW")) {
+        desplazamiento.addScaledVector(frente, velocidad);
+    }
+
+    if (teclasPresionadas.has("KeyS")) {
+        desplazamiento.addScaledVector(frente, -velocidad);
+    }
+
+    if (teclasPresionadas.has("KeyD")) {
+        desplazamiento.addScaledVector(derecha, velocidad);
+    }
+
+    if (teclasPresionadas.has("KeyA")) {
+        desplazamiento.addScaledVector(derecha, -velocidad);
+    }
+
+    if (teclasPresionadas.has("KeyQ")) {
+        desplazamiento.y += velocidad;
+    }
+
+    if (teclasPresionadas.has("KeyE")) {
+        desplazamiento.y -= velocidad;
+    }
+
+    if (desplazamiento.lengthSq() > 0) {
+        camara.position.add(desplazamiento);
+        controles.target.add(desplazamiento);
+    }
+
+}
+
+
+// ============================================================
 // ANIMACIÓN
 // ============================================================
 
@@ -801,6 +886,9 @@ function animar() {
 
     );
 
+    const deltaSegundos = 1 / 60;
+
+    moverConTeclado(deltaSegundos);
 
     // Suavizar controles
 
@@ -829,3 +917,20 @@ function animar() {
 // ============================================================
 
 animar();
+function init_controls() {
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true;
+            controls.enablePan = false;
+
+            controls.minPolarAngle = Math.PI / 4;
+            controls.maxPolarAngle = Math.PI / 2.1;
+
+            controls.minDistance = 3;
+            controls.maxDistance = 10;
+
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.2;
+        }

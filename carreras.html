@@ -12,19 +12,27 @@
     <link rel="stylesheet" href="estilo.css">
 
     <style>
-        .page-wrap{ padding: 72px 6vw; max-width:1100px; margin:0 auto; }
-        .list-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-top:18px }
+        .page-wrap{ padding: 120px 6vw 48px; max-width:1100px; margin:0 auto; }
+        .page-wrap h1{ color:#ffe06a; }
+        .page-wrap > p{ color:#e5edf8; max-width:760px; line-height:1.6; }
+        .list-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:18px }
         .card{ background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); padding:18px; border-radius:12px; cursor:pointer }
-        .card strong{ display:block; margin-bottom:8px; font-family:'Space Grotesk',sans-serif }
+        .card strong{ display:block; margin-bottom:8px; color:#ffe06a; font-family:'Space Grotesk',sans-serif }
+        .card small{ display:block; margin-bottom:8px; color:#75b9ff; letter-spacing:.7px; font-size:10px; text-transform:uppercase }
+        .card div{ color:#e5edf8; line-height:1.5; }
+        .card:nth-child(even){ border-color:rgba(255,211,61,.35); }
+        .card:nth-child(odd){ border-color:rgba(117,185,255,.35); }
         #detalle{ margin-top:26px; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:20px; border-radius:12px }
-        .back{ display:inline-block; margin-bottom:12px; color:var(--ink-dim); text-decoration:none }
+        #detalle h2{ color:#ffe06a; }
+        #detalle-texto{ white-space:pre-line; color:#e5edf8; line-height:1.7; }
+        .back{ display:inline-block; margin-bottom:12px; color:#75b9ff; text-decoration:none }
     </style>
 </head>
 <body>
 
-    <nav id="menu" style="position:static;margin:18px auto;left:0;right:0;width:fit-content;">
-        <div class="logo">PÍO XII</div>
-        <ul class="links" style="display:inline-flex;gap:14px">
+    <nav id="menu">
+        <div class="logo">INSTITUTO TÉCNICO <strong>PÍO XII</strong></div>
+        <ul class="links">
             <li><a href="index.html">Inicio</a></li>
             <li><a href="carreras.html">Carreras</a></li>
             <li><a href="index.html#historia">Historia</a></li>
@@ -34,7 +42,7 @@
 
     <main class="page-wrap">
         <h1>Carreras Técnicas</h1>
-        <p>Explora la oferta educativa del Instituto Tecnológico Pío XII. Haz clic en una carrera para ver más detalles.</p>
+        <p>El Instituto Técnico Pío XII ofrece carreras a nivel Técnico Superior, con una duración general de 3 años. Su oferta reúne formación comercial, informática y especialidades productivas para el desarrollo de Llallagua y la región.</p>
 
         <div id="lista" class="list-grid"></div>
 
@@ -50,68 +58,50 @@
             {
                 id: 'contabilidad',
                 titulo: 'CONTABILIDAD GENERAL',
-                resumen: 'Gestión y administración financiera',
-                detalle: `La Licenciatura en Contabilidad General forma profesionales con capacidad para dirigir y auditar la situación económica y financiera de organizaciones.
+                area: 'Área comercial y administrativa',
+                resumen: 'Contabilidad financiera y gestión tributaria',
+                detalle: `Es una de las carreras pilares de la institución. Capacita en contabilidad financiera, auditoría básica, gestión tributaria y preparación de estados financieros para empresas públicas o privadas.
 
-Los egresados interpretan datos para la toma de decisiones gerenciales, realizan planificación fiscal estratégica y evalúan riesgos financieros.
-
-Perfil del egresado:
-- Dirección de departamentos contables y financieros.
-- Auditoría interna y externa, peritaje contable.
-- Diseño de políticas tributarias y control de gestión.`
-            },
-            {
-                id: 'informatica',
-                titulo: 'SISTEMAS INFORMÁTICOS',
-                resumen: 'Desarrollo de software y sistemas',
-                detalle: `Esta carrera prepara profesionales capaces de diseñar, implementar y gestionar infraestructuras tecnológicas.
-
-Los egresados lideran proyectos de desarrollo de software, arquitectura de redes empresariales, ciberseguridad e integración de tecnologías emergentes (IA y computación en la nube).
-
-Perfil del egresado:
-- Desarrollo y gestión de proyectos de software.
-- Arquitectura y administración de sistemas y redes.
-- Gestión de seguridad informática.`
-            },
-            {
-                id: 'administracion',
-                titulo: 'ADMINISTRACION DE EMPRESAS',
-                resumen: 'Dirección y gestión empresarial',
-                detalle: `Esta carrera forma líderes con visión integral del mercado y competencias para dirigir organizaciones.
-
-Los profesionales diseñan modelos de negocio, gestionan operaciones, finanzas y recursos humanos, y lideran procesos de transformación organizacional.
-
-Perfil del egresado:
-- Gerencia general y dirección estratégica.
-- Consultoría y evaluación de proyectos.
-- Diseño de estrategias competitivas.`
+Duración general: 3 años · Nivel: Técnico Superior.`
             },
             {
                 id: 'secretariado',
                 titulo: 'SECRETARIADO EJECUTIVO',
-                resumen: 'Gestión y comunicación institucional',
-                detalle: `La Licenciatura en Secretariado Ejecutivo forma profesionales expertos en gestión gerencial, comunicación corporativa y relaciones públicas.
+                area: 'Área comercial y administrativa',
+                resumen: 'Gestión de oficinas y asistencia administrativa',
+                detalle: `Está enfocada en la gestión de oficinas y la asistencia administrativa. Desarrolla destrezas en redacción comercial, archivo digital, relaciones públicas, etiqueta corporativa y herramientas de computación aplicadas a la oficina.
 
-Los egresados actúan como enlace estratégico de la alta dirección, optimizan flujos de información y coordinan eventos institucionales de alto nivel.
+Duración general: 3 años · Nivel: Técnico Superior.`
+            },
+            {
+                id: 'administracion',
+                titulo: 'ADMINISTRACIÓN DE EMPRESAS',
+                area: 'Área comercial y administrativa',
+                resumen: 'Planificación y dirección de negocios',
+                detalle: `Orienta a los estudiantes en la planificación, organización, dirección y control de recursos para negocios locales y emprendimientos autónomos.
 
-Perfil del egresado:
-- Gestión administrativa y apoyo directivo.
-- Comunicación institucional y relaciones públicas.
-- Organización de eventos y protocolos.`
+Duración general: 3 años · Nivel: Técnico Superior.`
+            },
+            {
+                id: 'informatica',
+                titulo: 'SISTEMAS INFORMÁTICOS',
+                area: 'Área de tecnología e informática',
+                resumen: 'Soporte técnico, redes y bases de datos',
+                detalle: `Prepara profesionales capaces de dar soporte técnico a computadoras, diseñar redes de comunicación locales y gestionar bases de datos para optimizar los procesos de información de las empresas.
+
+Duración general: 3 años · Nivel: Técnico Superior.`
             },
             {
                 id: 'gastronomia',
-                titulo: 'GASTRONOMIA',
-                resumen: 'Ciencias culinarias y gestión gastronómica',
-                detalle: `La Licenciatura en Gastronomía combina el arte culinario con ciencias de la alimentación y gestión empresarial.
+                titulo: 'GASTRONOMÍA',
+                area: 'Especialidad técnica y productiva',
+                resumen: 'Cocina, repostería y gestión gastronómica',
+                detalle: `Está enfocada en el arte culinario, las técnicas de cocina nacional e internacional, la repostería y la gestión de negocios de alimentos y bebidas.
 
-Los egresados innovan en técnicas culinarias, gestionan emprendimientos gastronómicos y preservan patrimonio alimentario.
-
-Perfil del egresado:
-- Dirección y gestión de establecimientos gastronómicos.
-- Investigación e innovación culinaria.
-- Desarrollo de productos alimentarios.`
-            }
+Duración general: 3 años · Nivel: Técnico Superior.`
+            },
+            
+   
         ];
 
         const lista = document.getElementById('lista');
@@ -122,7 +112,7 @@ Perfil del egresado:
         function crearCard(c){
             const el = document.createElement('div');
             el.className = 'card';
-            el.innerHTML = `<strong>${c.titulo}</strong><div style="color:var(--ink-dim)">${c.resumen}</div>`;
+            el.innerHTML = `<small>${c.area}</small><strong>${c.titulo}</strong><div>${c.resumen}</div>`;
             el.addEventListener('click', ()=> mostrarDetalle(c));
             return el;
         }
