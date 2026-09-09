@@ -73,7 +73,7 @@ const renderizador = new THREE.WebGLRenderer({
 
     alpha: true
 
-});
+}); 
 
 
 // ------------------------------------------------------------
@@ -402,7 +402,7 @@ let modeloCargado = null;
 
 cargador.load(
 
-    "./modelos/Infraestructura_Pio_XII.glb",
+    "./modelos/pio12todo.glb",  // Ruta del modelo
 
 
     // ========================================================
