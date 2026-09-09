@@ -65,6 +65,9 @@ body{
 }
 
 .logo{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 20px;
@@ -74,6 +77,15 @@ body{
     background-clip: text;
     color: transparent;
     white-space: nowrap;
+    text-decoration: none;
+}
+
+.logo img{
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #ffffff;
 }
 
 .logo strong{ color: #ffe06a; }
@@ -105,9 +117,9 @@ body{
 ===================================================== */
 section{
     position: relative;
-    min-height: 60vh;
+    min-height: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 70px 8vw 35px;
     pointer-events: none;
 }
@@ -126,6 +138,14 @@ section{
    HERO / INICIO
 ===================================================== */
 #inicio{ justify-content: flex-start; }
+
+.btn-campus{
+    position: fixed;
+    top: 92px;
+    right: 6vw;
+    z-index: 20;
+    pointer-events: auto;
+}
 
 .hero-eyebrow{
     display: inline-flex;
@@ -146,7 +166,7 @@ section{
     display: inline-block;
 }
 
-.hero-panel{ max-width: 620px; padding: 32px 34px; }
+.hero-panel{ width: min(700px, 100%); padding: 32px 34px; }
 
 .hero-panel h1{
     font-family: var(--font-display);
@@ -228,7 +248,7 @@ section{
 ===================================================== */
 #historia{ justify-content: flex-start; }
 
-.historia-panel{ max-width: 700px; padding: 32px 34px; }
+.historia-panel{ width: min(700px, 100%); padding: 32px 34px; }
 
 .section-number{
     font-family: var(--font-display);
@@ -294,7 +314,7 @@ section{
 ===================================================== */
 #contacto{ justify-content: flex-start; }
 
-.contacto-panel{ width: 100%; max-width: 520px; padding: 32px 34px; margin: 0; }
+.contacto-panel{ width: min(700px, 100%); padding: 32px 34px; margin: 0; }
 
 .contacto-panel h2{
     font-family: var(--font-display);
@@ -383,7 +403,7 @@ footer{
    RESPONSIVE
 ===================================================== */
 @media (max-width: 900px){
-    section{ min-height: 56vh; padding: 65px 6vw 30px; justify-content: flex-start !important; }
+    section{ min-height: 0; padding: 65px 6vw 30px; justify-content: flex-start !important; }
     .hero-panel, .historia-panel, .contacto-panel{ max-width: 100%; padding: 26px 22px; }
     .hero-stats{ gap: 22px; flex-wrap: wrap; }
     .timeline{ flex-wrap: wrap; gap: 16px; }
@@ -402,6 +422,11 @@ footer{
         letter-spacing: 1px;
     }
 
+    .logo img{
+        width: 32px;
+        height: 32px;
+    }
+
     .links{
         width: 100%;
         justify-content: space-between;
@@ -417,6 +442,11 @@ footer{
     section{
         min-height: 100svh;
         padding: 126px 16px 28px;
+    }
+
+    .btn-campus{
+        top: 118px;
+        right: 16px;
     }
 
     .hero-panel,

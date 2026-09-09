@@ -12,26 +12,43 @@
     <link rel="stylesheet" href="estilo.css">
 
     <style>
-        .page-wrap{ padding: 120px 6vw 48px; max-width:1100px; margin:0 auto; }
-        .page-wrap h1{ color:#ffe06a; }
-        .page-wrap > p{ color:#e5edf8; max-width:760px; line-height:1.6; }
-        .list-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:18px }
-        .card{ background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); padding:18px; border-radius:12px; cursor:pointer }
-        .card strong{ display:block; margin-bottom:8px; color:#ffe06a; font-family:'Space Grotesk',sans-serif }
-        .card small{ display:block; margin-bottom:8px; color:#75b9ff; letter-spacing:.7px; font-size:10px; text-transform:uppercase }
-        .card div{ color:#e5edf8; line-height:1.5; }
-        .card:nth-child(even){ border-color:rgba(255,211,61,.35); }
-        .card:nth-child(odd){ border-color:rgba(117,185,255,.35); }
-        #detalle{ margin-top:26px; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:20px; border-radius:12px }
-        #detalle h2{ color:#ffe06a; }
-        #detalle-texto{ white-space:pre-line; color:#e5edf8; line-height:1.7; }
-        .back{ display:inline-block; margin-bottom:12px; color:#75b9ff; text-decoration:none }
+        body{ background:linear-gradient(135deg,#06152d 0%,#08101f 54%,#17243a 100%); }
+        .page-wrap{ max-width:1180px; margin:0 auto; padding:138px 6vw 72px; }
+        .page-intro{ max-width:760px; margin-bottom:42px; }
+        .page-kicker{ color:var(--accent-a); font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+        .page-wrap h1{ color:var(--accent-b); font-family:var(--font-display); font-size:clamp(38px,5vw,64px); line-height:1; margin-bottom:18px; }
+        .page-intro > p{ color:var(--ink-dim); max-width:700px; font-size:16px; line-height:1.75; }
+        .program-header{ display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:16px; }
+        .program-header h2{ color:#fff; font-family:var(--font-display); font-size:22px; }
+        .program-header span{ color:#b9d9ff; font-size:13px; }
+        .catalog-layout{ display:grid; grid-template-columns:minmax(0,1fr) 430px; gap:24px; align-items:start; }
+        .list-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+        .card{ position:relative; min-height:205px; display:flex; flex-direction:column; justify-content:space-between; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); padding:22px; border-radius:14px; cursor:pointer; box-shadow:0 16px 36px rgba(0,0,0,.18); transition:transform .25s ease,background .25s ease,border-color .25s ease; }
+        .card:hover, .card:focus-visible{ transform:translateY(-5px); background:rgba(255,255,255,.13); border-color:var(--accent-b); outline:none; }
+        .card::before{ content:attr(data-number); color:var(--accent-a); font-family:var(--font-display); font-size:13px; font-weight:700; letter-spacing:1px; }
+        .card strong{ display:block; margin:28px 0 10px; color:var(--accent-b); font-family:var(--font-display); font-size:21px; line-height:1.1; }
+        .card small{ display:block; color:#b9d9ff; letter-spacing:1px; font-size:10px; text-transform:uppercase; }
+        .card div{ color:var(--ink-dim); line-height:1.55; font-size:14px; }
+        .details-button{ align-self:flex-start; margin-top:18px; padding:9px 13px; border:1px solid rgba(117,185,255,.5); border-radius:7px; background:rgba(117,185,255,.12); color:#ddecff; font:600 12px var(--font-body); cursor:pointer; transition:background .2s ease,color .2s ease,border-color .2s ease; }
+        .details-button:hover, .details-button:focus-visible{ background:var(--accent-b); border-color:var(--accent-b); color:#06110d; outline:none; }
+        #detalle{ position:sticky; top:112px; margin:0; min-height:300px; background:rgba(3,10,24,.78); border:1px solid rgba(255,255,255,.22); padding:30px; border-radius:14px; box-shadow:0 22px 50px rgba(0,0,0,.24); }
+        #detalle:not([hidden]){ animation:detail-in .3s ease both; }
+        @keyframes detail-in{ from{ opacity:0; transform:translateX(8px); } to{ opacity:1; transform:translateX(0); } }
+        #detalle h2{ color:var(--accent-b); font-family:var(--font-display); font-size:clamp(26px,3vw,38px); margin-bottom:14px; }
+        .detail-body{ display:grid; grid-template-columns:minmax(0,1fr) 190px; gap:22px; align-items:start; }
+        #detalle-texto{ white-space:pre-line; color:var(--ink-dim); max-width:none; line-height:1.75; text-align:left; }
+        #detalle-imagen{ width:190px; height:220px; object-fit:contain; background:rgba(255,255,255,.92); border:1px solid rgba(255,255,255,.25); border-radius:10px; box-shadow:0 12px 26px rgba(0,0,0,.28); }
+        @media (max-width:900px){ .catalog-layout{ grid-template-columns:1fr; } #detalle{ position:relative; top:auto; } }
+        @media (max-width:760px){ .page-wrap{ padding:124px 18px 48px; } .program-header{ align-items:flex-start; flex-direction:column; gap:6px; } .list-grid{ grid-template-columns:1fr; } .card{ min-height:190px; } #detalle{ padding:22px; } .detail-body{ grid-template-columns:1fr; } #detalle-imagen{ width:100%; height:190px; } }
     </style>
 </head>
 <body>
 
     <nav id="menu">
-        <div class="logo">INSTITUTO TÉCNICO <strong>PÍO XII</strong></div>
+        <a class="logo" href="index.html" aria-label="Instituto Tecnológico Pío XII">
+            <img src="logo.jpg" alt="Logo del Instituto Tecnológico Pío XII">
+            <span>INSTITUTO TECNOLÓGICO <strong>PÍO XII</strong></span>
+        </a>
         <ul class="links">
             <li><a href="index.html">Inicio</a></li>
             <li><a href="carreras.html">Carreras</a></li>
@@ -41,15 +58,27 @@
     </nav>
 
     <main class="page-wrap">
-        <h1>Carreras Técnicas</h1>
-        <p>El Instituto Técnico Pío XII ofrece carreras a nivel Técnico Superior, con una duración general de 3 años. Su oferta reúne formación comercial, informática y especialidades productivas para el desarrollo de Llallagua y la región.</p>
+        <header class="page-intro">
+            <div class="page-kicker">Formación profesional · Técnico Superior</div>
+            <h1>Elegí el área donde querés construir tu futuro.</h1>
+            <p>El Instituto Tecnológico Pío XII ofrece programas de tres años que combinan formación comercial, informática y especialidades productivas para el desarrollo de Llallagua y la región.</p>
+        </header>
 
-        <div id="lista" class="list-grid"></div>
+        <div class="program-header">
+            <h2>Oferta académica</h2>
+            <span>5 programas · Duración general: 3 años</span>
+        </div>
 
-        <div id="detalle" hidden>
-            <a class="back" href="index.html">← Volver al inicio</a>
-            <h2 id="detalle-titulo"></h2>
-            <p id="detalle-texto"></p>
+        <div class="catalog-layout">
+            <div id="lista" class="list-grid"></div>
+
+            <div id="detalle" hidden>
+                <h2 id="detalle-titulo"></h2>
+                <div class="detail-body">
+                    <p id="detalle-texto"></p>
+                    <img id="detalle-imagen" src="" alt="">
+                </div>
+            </div>
         </div>
     </main>
 
@@ -60,6 +89,7 @@
                 titulo: 'CONTABILIDAD GENERAL',
                 area: 'Área comercial y administrativa',
                 resumen: 'Contabilidad financiera y gestión tributaria',
+                imagen: 'imagenes/logo_carrera_conta.jpg',
                 detalle: `Es una de las carreras pilares de la institución. Capacita en contabilidad financiera, auditoría básica, gestión tributaria y preparación de estados financieros para empresas públicas o privadas.
 
 Duración general: 3 años · Nivel: Técnico Superior.`
@@ -69,6 +99,7 @@ Duración general: 3 años · Nivel: Técnico Superior.`
                 titulo: 'SECRETARIADO EJECUTIVO',
                 area: 'Área comercial y administrativa',
                 resumen: 'Gestión de oficinas y asistencia administrativa',
+                imagen: 'imagenes/logo_carrera_secretariado.jpg',
                 detalle: `Está enfocada en la gestión de oficinas y la asistencia administrativa. Desarrolla destrezas en redacción comercial, archivo digital, relaciones públicas, etiqueta corporativa y herramientas de computación aplicadas a la oficina.
 
 Duración general: 3 años · Nivel: Técnico Superior.`
@@ -78,6 +109,7 @@ Duración general: 3 años · Nivel: Técnico Superior.`
                 titulo: 'ADMINISTRACIÓN DE EMPRESAS',
                 area: 'Área comercial y administrativa',
                 resumen: 'Planificación y dirección de negocios',
+                imagen: 'imagenes/logo_carrera_admi.jpg',
                 detalle: `Orienta a los estudiantes en la planificación, organización, dirección y control de recursos para negocios locales y emprendimientos autónomos.
 
 Duración general: 3 años · Nivel: Técnico Superior.`
@@ -87,6 +119,7 @@ Duración general: 3 años · Nivel: Técnico Superior.`
                 titulo: 'SISTEMAS INFORMÁTICOS',
                 area: 'Área de tecnología e informática',
                 resumen: 'Soporte técnico, redes y bases de datos',
+                imagen: 'imagenes/logo_carrera_sistemas.jpg',
                 detalle: `Prepara profesionales capaces de dar soporte técnico a computadoras, diseñar redes de comunicación locales y gestionar bases de datos para optimizar los procesos de información de las empresas.
 
 Duración general: 3 años · Nivel: Técnico Superior.`
@@ -96,6 +129,7 @@ Duración general: 3 años · Nivel: Técnico Superior.`
                 titulo: 'GASTRONOMÍA',
                 area: 'Especialidad técnica y productiva',
                 resumen: 'Cocina, repostería y gestión gastronómica',
+                imagen: 'imagenes/logo_gastronomia.jpg',
                 detalle: `Está enfocada en el arte culinario, las técnicas de cocina nacional e internacional, la repostería y la gestión de negocios de alimentos y bebidas.
 
 Duración general: 3 años · Nivel: Técnico Superior.`
@@ -108,18 +142,30 @@ Duración general: 3 años · Nivel: Técnico Superior.`
         const detalle = document.getElementById('detalle');
         const titulo = document.getElementById('detalle-titulo');
         const texto = document.getElementById('detalle-texto');
+        const imagen = document.getElementById('detalle-imagen');
 
         function crearCard(c){
             const el = document.createElement('div');
             el.className = 'card';
-            el.innerHTML = `<small>${c.area}</small><strong>${c.titulo}</strong><div>${c.resumen}</div>`;
+            el.tabIndex = 0;
+            el.dataset.number = String(carreras.indexOf(c) + 1).padStart(2, '0');
+            el.innerHTML = `<small>${c.area}</small><strong>${c.titulo}</strong><div>${c.resumen}</div><button class="details-button" type="button">Ver detalles</button>`;
             el.addEventListener('click', ()=> mostrarDetalle(c));
+            el.querySelector('.details-button').addEventListener('click', (event)=> {
+                event.stopPropagation();
+                mostrarDetalle(c);
+            });
+            el.addEventListener('keydown', (event)=> {
+                if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); mostrarDetalle(c); }
+            });
             return el;
         }
 
         function mostrarDetalle(c){
             titulo.textContent = c.titulo;
             texto.textContent = c.detalle;
+            imagen.src = c.imagen;
+            imagen.alt = `Imagen de ${c.titulo}`;
             detalle.hidden = false;
             window.scrollTo({top: detalle.offsetTop - 20, behavior: 'smooth'});
         }

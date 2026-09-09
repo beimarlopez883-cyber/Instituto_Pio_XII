@@ -7,6 +7,9 @@ import * as THREE from 'three';
 import { GLTFLoader }
     from 'three/addons/loaders/GLTFLoader.js';
 
+import { FBXLoader }
+    from 'three/addons/loaders/FBXLoader.js';
+
 import { OrbitControls }
     from 'three/addons/controls/OrbitControls.js';
 
@@ -171,7 +174,7 @@ const controles = new OrbitControls(
 // ============================================================
 
 // En la vista del campus el mouse controla la cámara.
-controles.enableRotate = modoExploracion;
+controles.enableRotate = false;
 
 // Movimiento suave
 controles.enableDamping = true;
@@ -187,7 +190,7 @@ controles.dampingFactor = 0.08;
 // Aquí hacemos que el zoom sea menos sensible.
 //
 
-controles.enableZoom = modoExploracion;
+controles.enableZoom = false;
 
 
 // ⭐ ESTA ES UNA DE LAS MODIFICACIONES IMPORTANTES
@@ -209,7 +212,7 @@ controles.maxDistance = 300;
 // MOVIMIENTO LATERAL
 // ============================================================
 
-controles.enablePan = modoExploracion;
+controles.enablePan = false;
 
 
 // Velocidad del movimiento lateral
@@ -389,12 +392,73 @@ escena.add(
 // ============================================================
 
 const cargador = new GLTFLoader();
+const cargadorFBX = new FBXLoader();
 
 // Indicador de carga en pantalla (opcional, ver index.html)
 const indicadorCarga = document.getElementById("cargaModelo");
 
 // Variable global para el modelo
 let modeloCargado = null;
+let personajeCargado = null;
+let mezcladorPersonaje = null;
+let accionCaminar = null;
+let nivelBaseModelo = null;
+const reloj = new THREE.Clock();
+
+function alinearBasePersonaje() {
+    if (!personajeCargado || nivelBaseModelo === null) {
+        return;
+    }
+
+    const cajaPersonaje = new THREE.Box3().setFromObject(personajeCargado);
+    personajeCargado.position.y += nivelBaseModelo + 2 - cajaPersonaje.min.y;
+}
+
+
+// ============================================================
+// CARGAR PERSONAJE ANIMADO EN LA PORTADA
+// ============================================================
+
+if (!modoExploracion) {
+    cargadorFBX.load(
+        "./modelos/camninando.fbx",
+        function(personaje) {
+            personajeCargado = personaje;
+            mezcladorPersonaje = new THREE.AnimationMixer(personaje);
+
+            if (personaje.animations.length > 0) {
+                accionCaminar = mezcladorPersonaje.clipAction(personaje.animations[0]);
+                accionCaminar.loop = THREE.LoopOnce;
+                accionCaminar.clampWhenFinished = true;
+                accionCaminar.reset().play();
+            }
+
+            personaje.traverse(function(objeto) {
+                if (objeto.isMesh) {
+                    objeto.castShadow = true;
+                    objeto.receiveShadow = true;
+                }
+            });
+
+            const cajaPersonaje = new THREE.Box3().setFromObject(personaje);
+            const tamañoPersonaje = cajaPersonaje.getSize(new THREE.Vector3());
+            const alturaDeseada = 6;
+            const escala = alturaDeseada / tamañoPersonaje.y;
+
+            personaje.scale.setScalar(escala);
+            personaje.position.set(25, 0, 34);
+            personaje.rotation.y = Math.PI;
+
+            escena.add(personaje);
+            alinearBasePersonaje();
+            console.log("Personaje FBX cargado con animación:", personaje.animations[0]?.name || "sin nombre");
+        },
+        undefined,
+        function(error) {
+            console.error("No se pudo cargar ./modelos/camninando.fbx:", error);
+        }
+    );
+}
 
 
 // ============================================================
@@ -524,8 +588,12 @@ cargador.load(
             centro.z;
 
         // En la portada queda a la derecha; en el campus queda centrado.
-        modelo.position.x += modoExploracion ? 0 : 35;
-        modelo.rotation.set(0, 0, 0);
+        modelo.position.x += modoExploracion ? 0 : 60;
+        modelo.rotation.set(0, Math.PI / 2, 0);
+
+        nivelBaseModelo = new THREE.Box3()
+            .setFromObject(modelo)
+            .min.y;
 
 
         // ====================================================
@@ -570,6 +638,8 @@ cargador.load(
 
         );
 
+        alinearBasePersonaje();
+
 
         // ====================================================
         // VISTA INICIAL
@@ -588,7 +658,7 @@ cargador.load(
 
         0,
         modoExploracion ? 0 : 5,
-        modoExploracion ? 45 : 70
+        modoExploracion ? 45 : 52
 
 
         );
@@ -599,7 +669,7 @@ cargador.load(
         // ====================================================
 
         controles.target.set(
-    0,
+    modoExploracion ? 0 : 20,
     modoExploracion ? 0 : 5,
     modoExploracion ? 0 : 15
 );
@@ -800,6 +870,12 @@ const vectorArriba = new THREE.Vector3(0, 1, 0);
 
 window.addEventListener("keydown", (evento) => {
 
+    if (evento.code === "Space" && !modoExploracion && accionCaminar) {
+        accionCaminar.reset().play();
+        evento.preventDefault();
+        return;
+    }
+
     if ([
         "KeyW",
         "KeyA",
@@ -826,6 +902,51 @@ window.addEventListener("keyup", (evento) => {
 function moverConTeclado(deltaSegundos) {
 
     if (teclasPresionadas.size === 0) {
+        if (modoExploracion && accionCaminar) {
+            accionCaminar.stop();
+        }
+        return;
+    }
+
+    if (modoExploracion && personajeCargado) {
+        const direccion = new THREE.Vector3();
+
+        if (teclasPresionadas.has("KeyW")) {
+            direccion.z -= 1;
+        }
+
+        if (teclasPresionadas.has("KeyS")) {
+            direccion.z += 1;
+        }
+
+        if (teclasPresionadas.has("KeyD")) {
+            direccion.x += 1;
+        }
+
+        if (teclasPresionadas.has("KeyA")) {
+            direccion.x -= 1;
+        }
+
+        if (direccion.lengthSq() > 0) {
+            direccion.normalize();
+            personajeCargado.position.addScaledVector(
+                direccion,
+                velocidadMovimiento * deltaSegundos
+            );
+            personajeCargado.rotation.y = Math.atan2(
+                direccion.x,
+                -direccion.z
+            );
+        }
+
+        if (accionCaminar) {
+            if (teclasPresionadas.has("KeyW")) {
+                accionCaminar.play();
+            } else {
+                accionCaminar.stop();
+            }
+        }
+
         return;
     }
 
@@ -899,7 +1020,11 @@ function animar() {
 
     );
 
-    const deltaSegundos = 1 / 60;
+    const deltaSegundos = reloj.getDelta();
+
+    if (mezcladorPersonaje) {
+        mezcladorPersonaje.update(deltaSegundos);
+    }
 
     moverConTeclado(deltaSegundos);
 
