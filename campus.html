@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar el campus - Instituto Pío XII</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        body {
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        #visor3D {
+            z-index: 0;
+        }
+
+        .campus-bar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px;
+            background: rgba(8, 48, 115, 0.88);
+            border: 1px solid rgba(255, 211, 61, 0.65);
+            border-radius: 10px;
+            backdrop-filter: blur(12px);
+            max-width: calc(100vw - 40px);
+        }
+
+        .campus-bar a {
+            color: #ffe06a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .campus-bar span {
+            color: #e5edf8;
+            font-size: 13px;
+        }
+
+        @media (max-width: 640px) {
+            .campus-bar {
+                top: max(10px, env(safe-area-inset-top));
+                left: 10px;
+                right: 10px;
+                max-width: none;
+                justify-content: space-between;
+                gap: 8px;
+                padding: 9px 10px;
+            }
+
+            .campus-bar span {
+                font-size: 10px;
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+<body data-modo="exploracion">
+    <div id="visor3D"></div>
+    <div id="cargaModelo">Cargando modelo 3D... 0%</div>
+
+    <div class="campus-bar">
+        <a href="index.html">Volver al inicio</a>
+        <span>Explora el campus con el mouse y el teclado</span>
+    </div>
+
+    <script type="module" src="edificio.js"></script>
+</body>
+</html>

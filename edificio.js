@@ -16,6 +16,7 @@ import { OrbitControls }
 // ============================================================
 
 const contenedor = document.getElementById("visor3D");
+const modoExploracion = document.body.dataset.modo === "exploracion";
 
 
 // ============================================================
@@ -169,8 +170,8 @@ const controles = new OrbitControls(
 // ROTACIÓN
 // ============================================================
 
-// Activar rotación
-controles.enableRotate = true;
+// En la vista del campus el mouse controla la cámara.
+controles.enableRotate = modoExploracion;
 
 // Movimiento suave
 controles.enableDamping = true;
@@ -186,7 +187,7 @@ controles.dampingFactor = 0.08;
 // Aquí hacemos que el zoom sea menos sensible.
 //
 
-controles.enableZoom = true;
+controles.enableZoom = modoExploracion;
 
 
 // ⭐ ESTA ES UNA DE LAS MODIFICACIONES IMPORTANTES
@@ -208,7 +209,7 @@ controles.maxDistance = 300;
 // MOVIMIENTO LATERAL
 // ============================================================
 
-controles.enablePan = true;
+controles.enablePan = modoExploracion;
 
 
 // Velocidad del movimiento lateral
@@ -422,8 +423,6 @@ cargador.load(
         console.log(
             "===================================="
         );
-
-
         const modelo = gltf.scene;
         
         // Guardar referencia global
@@ -524,6 +523,10 @@ cargador.load(
         modelo.position.z -=
             centro.z;
 
+        // En la portada queda a la derecha; en el campus queda centrado.
+        modelo.position.x += modoExploracion ? 0 : 35;
+        modelo.rotation.set(0, 0, 0);
+
 
         // ====================================================
         // OBTENER TAMAÑO
@@ -584,8 +587,8 @@ cargador.load(
         camara.position.set(
 
         0,
-        30,
-        70
+        modoExploracion ? 0 : 5,
+        modoExploracion ? 45 : 70
 
 
         );
@@ -596,9 +599,9 @@ cargador.load(
         // ====================================================
 
         controles.target.set(
-    40,   // X: centro del edificio
-    5,  // Y: altura media
-    15  // Z: profundidad
+    0,
+    modoExploracion ? 0 : 5,
+    modoExploracion ? 0 : 15
 );
 
 
@@ -712,10 +715,10 @@ cargador.load(
         );
 
 
+        console.error("Ruta del modelo:", "./modelos/pio12todo.glb");
         console.error(
-
+            "El archivo existe, pero el navegador no pudo descargarlo o procesarlo:",
             error
-
         );
 
 
@@ -727,7 +730,7 @@ cargador.load(
 
         if (indicadorCarga) {
             indicadorCarga.textContent =
-                "No se pudo cargar el modelo 3D. Revisa la ruta del archivo .glb.";
+                "El modelo es muy pesado para el navegador. Optimiza pio12todo.glb y vuelve a cargar.";
         }
 
     }
@@ -779,13 +782,11 @@ window.addEventListener(
 
 let rotacionScroll = 0;
 
-window.addEventListener("wheel", (evento) => {
-
-    // Capturar la dirección y cantidad del scroll
-    // El scroll normal sigue funcionando
-    rotacionScroll += evento.deltaY * 0.005;
-
-});
+if (!modoExploracion) {
+    window.addEventListener("wheel", (evento) => {
+        rotacionScroll += evento.deltaY * 0.005;
+    });
+}
 
 
 // ============================================================
@@ -794,6 +795,7 @@ window.addEventListener("wheel", (evento) => {
 
 const teclasPresionadas = new Set();
 const velocidadMovimiento = 12;
+const velocidadRotacion = 1.5;
 const vectorArriba = new THREE.Vector3(0, 1, 0);
 
 window.addEventListener("keydown", (evento) => {
@@ -804,7 +806,8 @@ window.addEventListener("keydown", (evento) => {
         "KeyS",
         "KeyD",
         "KeyQ",
-        "KeyE"
+        "KeyE",
+        ...(modoExploracion ? ["KeyZ", "KeyX"] : [])
     ].includes(evento.code)) {
 
         teclasPresionadas.add(evento.code);
@@ -840,6 +843,16 @@ function moverConTeclado(deltaSegundos) {
     derecha.crossVectors(frente, vectorArriba).normalize();
 
     const velocidad = velocidadMovimiento * deltaSegundos;
+
+    if (modoExploracion && modeloCargado) {
+        if (teclasPresionadas.has("KeyZ")) {
+            modeloCargado.rotation.y += velocidadRotacion * deltaSegundos;
+        }
+
+        if (teclasPresionadas.has("KeyX")) {
+            modeloCargado.rotation.y -= velocidadRotacion * deltaSegundos;
+        }
+    }
 
     if (teclasPresionadas.has("KeyW")) {
         desplazamiento.addScaledVector(frente, velocidad);
@@ -895,7 +908,7 @@ function animar() {
     controles.update();
 
     // Aplicar rotación por scroll al modelo
-    if (modeloCargado) {
+    if (modeloCargado && !modoExploracion) {
         modeloCargado.rotation.y = rotacionScroll;
     }
 
