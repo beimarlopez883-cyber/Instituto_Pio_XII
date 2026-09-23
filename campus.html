@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explorar el campus - Instituto Pío XII</title>
     <link rel="stylesheet" href="estilo.css">
+
+    <!-- THREE.JS -->
     <script type="importmap">
     {
         "imports": {
@@ -13,6 +15,10 @@
         }
     }
     </script>
+
+    <!-- GSAP: usado por edificio.js para el vuelo de cámara -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
     <style>
         body {
             overflow: hidden;
@@ -50,6 +56,11 @@
             font-size: 13px;
         }
 
+        #menuCarreras {
+            top: 92px;
+            left: 20px;
+        }
+
         @media (max-width: 640px) {
             .campus-bar {
                 top: max(10px, env(safe-area-inset-top));
@@ -65,16 +76,283 @@
                 font-size: 10px;
                 text-align: right;
             }
+
+            #menuCarreras {
+                top: 78px;
+                left: 10px;
+            }
         }
+        /* ============================================================
+   PANEL INFORMACIÓN DE CARRERA
+   ============================================================ */
+.info-carrera {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+
+    width: 620px;
+    max-width: calc(100vw - 60px);
+
+    z-index: 99999;
+
+    background: rgba(3, 10, 24, 0.94);
+    border: 1px solid rgba(117, 185, 255, 0.55);
+    border-radius: 16px;
+
+    padding: 25px;
+
+    color: white;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(60, 150, 255, 0.15);
+
+    backdrop-filter: blur(15px);
+
+    animation: aparecerCarrera 0.35s ease;
+}
+
+.info-carrera[hidden] {
+    display: none !important;
+}
+
+@keyframes aparecerCarrera {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+.info-carrera-contenido {
+
+    display: grid;
+
+    grid-template-columns: 1fr 150px;
+
+    gap: 25px;
+
+    align-items: center;
+
+}
+
+.info-area {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #75b9ff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+}
+
+.info-carrera h2 {
+
+    margin: 0 0 10px;
+
+    color: white;
+
+    font-size: 27px;
+
+}
+
+.info-carrera p {
+
+    margin: 0 0 12px;
+
+    color: #b9d9ff;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+.info-detalle {
+
+    color: #d9e7f7;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    white-space: pre-line;
+
+}
+
+.info-carrera img {
+
+    width: 150px;
+
+    height: 170px;
+
+    object-fit: contain;
+
+    background: white;
+
+    border-radius: 10px;
+
+}
+
+.cerrar-info {
+
+    position: absolute;
+
+    top: 8px;
+
+    right: 10px;
+
+    width: 30px;
+
+    height: 30px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.1);
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+}
+
+.cerrar-info:hover {
+
+    background: rgba(255,255,255,.25);
+
+}
+
+@media (max-width: 700px) {
+
+    .info-carrera {
+
+        left: 15px;
+
+        right: 15px;
+
+        bottom: 15px;
+
+        width: auto;
+
+        max-width: none;
+
+    }
+
+    .info-carrera-contenido {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .info-carrera img {
+
+        width: 100%;
+
+        height: 130px;
+
+    }
+
+}
     </style>
 </head>
 <body data-modo="exploracion">
+    
     <div id="visor3D"></div>
+    <div id="infoCarrera" class="info-carrera" hidden>
+
+    <button
+        id="cerrarInfoCarrera"
+        class="cerrar-info"
+        type="button">
+        ×
+    </button>
+
+    <div class="info-carrera-contenido">
+
+        <div class="info-carrera-texto">
+
+            <span id="infoCarreraArea" class="info-area">
+                Área académica
+            </span>
+
+            <h2 id="infoCarreraTitulo">
+                Carrera
+            </h2>
+
+            <p id="infoCarreraResumen">
+                Información de la carrera.
+            </p>
+
+            <div id="infoCarreraDetalle" class="info-detalle">
+            </div>
+
+        </div>
+
+        <img
+            id="infoCarreraImagen"
+            src=""
+            alt="Imagen de la carrera"
+        >
+
+    </div>
+
+</div>
     <div id="cargaModelo">Cargando modelo 3D... 0%</div>
 
     <div class="campus-bar">
         <a href="index.html">Volver al inicio</a>
         <span>Explora el campus con el mouse y el teclado</span>
+    </div>
+
+    <!-- =========================================================
+         MENÚ DE CARRERAS
+         Cada botón usa data-carrera="clave" que debe coincidir
+         con una clave dentro de CONFIG_CAMARA.destinos en edificio.js
+    ========================================================= -->
+    <div id="menuCarreras">
+        <h2>Explorar Carreras</h2>
+
+        <button type="button" data-carrera="contaduria">
+            📊 Contaduría General
+        </button>
+
+        <button type="button" data-carrera="sistemas">
+            💻 Sistemas Informáticos
+        </button>
+
+        <button type="button" data-carrera="secretariado">
+            📚 Secretariado Ejecutivo
+        </button>
+
+        <button type="button" data-carrera="gastronomia">
+            👨‍🍳 Gastronomía
+        </button>
+
+        <button type="button" data-carrera="administracion">
+            📋 Administración
+        </button>
+
+        <button type="button" id="volverCampus">
+            🏫 Volver al Campus
+        </button>
     </div>
 
     <script type="module" src="edificio.js"></script>
